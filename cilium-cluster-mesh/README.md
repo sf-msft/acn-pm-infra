@@ -3,7 +3,7 @@
 Create the two clusters along with vNets setup for peering via Bicep:
 
 ```
-az aks get-credentials --resource-group acns-pm-demo --name byo-cilium-1 --overwrite-existing
+az deployment group create --resource-group acns-pm-demo --template-file main.bicep --mode Incremental
 ```
 
 > Note: This is a case of resource dependency where agent pools require a subnet ID.
