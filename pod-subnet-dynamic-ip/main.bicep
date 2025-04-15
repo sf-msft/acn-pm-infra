@@ -2,7 +2,7 @@
 param clusterName string = 'bicep-test'
 
 @description('The location of the Managed Cluster resource.')
-param location string = 'westus3'
+param location string = 'westus2'
 
 @description('Optional DNS prefix to use with hosted Kubernetes API server FQDN.')
 param dnsPrefix string = 'acn-demo'
@@ -20,7 +20,41 @@ param agentCount int = 3
 @description('The size of the Virtual Machine.')
 param agentVMSize string = 'standard_d2s_v3'
 
-resource aks 'Microsoft.ContainerService/managedClusters@2024-06-02-preview' = {
+resource vnet1 'Microsoft.Network/virtualNetworks@2024-05-01' = {
+  name: '${clusterName}-cluster-net'
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: ['10.0.0.0/8']
+    }
+    subnets: [
+      {
+        name: '${clusterName}-node-subnet-1'
+        properties: {
+          addressPrefix: '10.240.0.0/16'
+        }
+      }
+      {
+        name: '${clusterName}-node-subnet-2'
+        properties: {
+          addressPrefix: '10.241.0.0/16'
+        }
+      }
+    ]
+  }
+}
+
+resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = {
+  name: '${clusterName}-node-subnet-1'
+  parent: vnet1
+}
+
+resource subnet2 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = {
+  name: '${clusterName}-node-subnet-2'
+  parent: vnet1
+}
+
+resource aks 'Microsoft.ContainerService/managedClusters@2024-10-02-preview' = {
   name: clusterName
   location: location
   identity: {
@@ -36,30 +70,13 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-06-02-preview' = {
         vmSize: agentVMSize
         osType: 'Linux'
         mode: 'System'
+        vnetSubnetID: subnet1.id
+        podSubnetID: subnet2.id
       }
     ]
     kubernetesVersion: '1.32'
     networkProfile: {
-      advancedNetworking: {
-        observability: {
-          enabled: true
-          tlsManagement: 'Managed'
-        }
-        security: {
-          // advancedNetworkPolicies: 'L7'
-          fqdnPolicy: {
-            enabled: true
-          }
-        }
-      }
       networkPlugin: 'azure'
-      networkPluginMode: 'overlay'
-      networkPolicy: 'cilium'
-      networkDataplane: 'cilium'
-      podCidr: '192.168.0.0/16'
-      podCidrs: [
-        '192.168.0.0/16'
-      ]
     }
   }
 }

@@ -23,7 +23,7 @@ param agentCount int = 3
 param agentVMSize string = 'standard_d2s_v3'
 
 
-resource vnet1 'Microsoft.Network/virtualNetworks@2024-01-01' = {
+resource vnet1 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   name: '${clusterName1}-cluster-net'
   location: location1
   properties: {
@@ -41,7 +41,7 @@ resource vnet1 'Microsoft.Network/virtualNetworks@2024-01-01' = {
   }
 }
 
-resource vnet2 'Microsoft.Network/virtualNetworks@2024-01-01' = {
+resource vnet2 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   name: '${clusterName2}-cluster-net'
   location: location2
   properties: {
@@ -59,12 +59,12 @@ resource vnet2 'Microsoft.Network/virtualNetworks@2024-01-01' = {
   }
 }
 
-resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' existing = {
+resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = {
   name: '${clusterName1}-node-subnet'
   parent: vnet1
 }
 
-resource subnet2 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' existing = {
+resource subnet2 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = {
   name: '${clusterName2}-node-subnet'
   parent: vnet2
 }
@@ -125,7 +125,7 @@ resource cluster2 'Microsoft.ContainerService/managedClusters@2024-06-02-preview
   }
 }
 
-resource peering1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2024-01-01' = {
+resource peering1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2024-05-01' = {
   name: 'peering-${clusterName1}-to-${clusterName2}'
   parent: vnet1
   properties: {
@@ -137,7 +137,7 @@ resource peering1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2024
   }
 }
 
-resource peering2 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2024-01-01' = {
+resource peering2 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2024-05-01' = {
   name: 'peering-${clusterName2}-to-${clusterName1}'
   parent: vnet2
   properties: {
