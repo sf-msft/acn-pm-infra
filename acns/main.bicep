@@ -52,6 +52,10 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-06-02-preview' = {
           }
         }
       }
+      ipFamilies: [
+        'ipv4'
+        'ipv6'
+      ]
       networkPlugin: 'azure'
       networkPluginMode: 'overlay'
       networkPolicy: 'cilium'
