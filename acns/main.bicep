@@ -1,5 +1,5 @@
 @description('The name of the Managed Cluster resource.')
-param clusterName string = 'bicep-test'
+param clusterName string = 'acns-test'
 
 @description('The location of the Managed Cluster resource.')
 param location string = 'westus3'
@@ -20,7 +20,7 @@ param agentCount int = 3
 @description('The size of the Virtual Machine.')
 param agentVMSize string = 'standard_d2s_v3'
 
-resource aks 'Microsoft.ContainerService/managedClusters@2024-06-02-preview' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-05-01' = {
   name: clusterName
   location: location
   identity: {
@@ -41,16 +41,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-06-02-preview' = {
     kubernetesVersion: '1.32'
     networkProfile: {
       advancedNetworking: {
-        observability: {
-          enabled: true
-          tlsManagement: 'Managed'
-        }
-        security: {
-          // advancedNetworkPolicies: 'L7'
-          fqdnPolicy: {
-            enabled: true
-          }
-        }
+        enabled: true
       }
       ipFamilies: [
         'ipv4'
