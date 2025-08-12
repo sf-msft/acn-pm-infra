@@ -9,5 +9,5 @@ Additionally, L7 policies and k8s 1.33 is selected although should be parametriz
 Create the cluster using `Incremental` mode to ensure idempotency when toggling ACNS features.
 
 ```
-az deployment group create --resource-group acn-pm-demo --template-file main.bicep --mode Incremental
+az deployment group create --resource-group acn-pm --template-file main.bicep --mode Incremental
 ```
