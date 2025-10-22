@@ -20,7 +20,7 @@ param agentCount int = 3
 @description('The size of the Virtual Machine.')
 param agentVMSize string = 'standard_d2s_v3'
 
-resource aks 'Microsoft.ContainerService/managedClusters@2025-05-01' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-07-01' = {
   name: clusterName
   location: location
   identity: {
@@ -35,10 +35,11 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-05-01' = {
         count: agentCount
         vmSize: agentVMSize
         osType: 'Linux'
+        osSKU: 'Ubuntu2404'
         mode: 'System'
       }
     ]
-    kubernetesVersion: '1.32'
+    kubernetesVersion: '1.33'
     networkProfile: {
       advancedNetworking: {
         enabled: true

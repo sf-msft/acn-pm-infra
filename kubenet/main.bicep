@@ -43,7 +43,7 @@ resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing
   parent: vnet1
 }
 
-resource aks 'Microsoft.ContainerService/managedClusters@2025-05-02-preview' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-07-01' = {
   name: clusterName
   location: location
   identity: {
