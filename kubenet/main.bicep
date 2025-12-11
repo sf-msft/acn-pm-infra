@@ -20,7 +20,7 @@ param agentCount int = 3
 @description('The size of the Virtual Machine.')
 param agentVMSize string = 'standard_d2s_v3'
 
-resource vnet1 'Microsoft.Network/virtualNetworks@2024-05-01' = {
+resource vnet1 'Microsoft.Network/virtualNetworks@2025-01-01' = {
   name: '${clusterName}-cluster-net'
   location: location
   properties: {
@@ -38,12 +38,12 @@ resource vnet1 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   }
 }
 
-resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = {
+resource subnet1 'Microsoft.Network/virtualNetworks/subnets@2025-01-01' existing = {
   name: '${clusterName}-subnet'
   parent: vnet1
 }
 
-resource aks 'Microsoft.ContainerService/managedClusters@2025-07-01' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-09-01' = {
   name: clusterName
   location: location
   identity: {

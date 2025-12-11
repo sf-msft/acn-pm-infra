@@ -1,8 +1,8 @@
 @description('The name of the Managed Cluster resource.')
-param clusterName string = 'acns-test'
+param clusterName string = 'pod-cidr-test'
 
 @description('The location of the Managed Cluster resource.')
-param location string = 'westus3'
+param location string = 'westus2'
 
 @description('Optional DNS prefix to use with hosted Kubernetes API server FQDN.')
 param dnsPrefix string = 'acn-demo'
@@ -20,7 +20,7 @@ param agentCount int = 3
 @description('The size of the Virtual Machine.')
 param agentVMSize string = 'standard_d2s_v3'
 
-resource aks 'Microsoft.ContainerService/managedClusters@2025-07-01' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-09-01' = {
   name: clusterName
   location: location
   identity: {
@@ -43,10 +43,20 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-07-01' = {
     networkProfile: {
       advancedNetworking: {
         enabled: true
+        security: {
+          enabled: false
+        }
+        observability: {
+          enabled: false
+        }
+        performance: {
+          accelerationMode: [
+            'BpfVeth'
+          ]
+        }
       }
       ipFamilies: [
         'ipv4'
-        'ipv6'
       ]
       networkPlugin: 'azure'
       networkPluginMode: 'overlay'
