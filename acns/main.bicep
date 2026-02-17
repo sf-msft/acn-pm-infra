@@ -20,7 +20,7 @@ param agentCount int = 3
 @description('The size of the Virtual Machine.')
 param agentVMSize string = 'standard_d2s_v3'
 
-resource aks 'Microsoft.ContainerService/managedClusters@2025-09-01' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-10-02-preview' = {
   name: clusterName
   location: location
   identity: {
@@ -50,9 +50,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-09-01' = {
           enabled: false
         }
         performance: {
-          accelerationMode: [
-            'BpfVeth'
-          ]
+          accelerationMode: 'BpfVeth'
         }
       }
       ipFamilies: [
